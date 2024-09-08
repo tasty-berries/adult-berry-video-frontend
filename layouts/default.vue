@@ -63,7 +63,10 @@ const links = computed(() => {
     });
 });
 
-const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: () => undefined});
+const viewAccepted = useCookie<boolean | undefined>(
+    'viewAccepted',
+    {default: () => undefined, expires: new Date(Date.now() + 24 * 3600 * 365 * 1000)}
+);
 
 const adultSettingsShown = ref<boolean>(viewAccepted.value === undefined);
 </script>
