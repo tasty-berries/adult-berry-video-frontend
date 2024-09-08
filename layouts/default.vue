@@ -71,7 +71,7 @@ const adultSettingsShown = ref<boolean>(viewAccepted.value === undefined);
 <template>
     <NuxtLoadingIndicator/>
 
-    <UModal v-model="adultSettingsShown">
+    <UModal v-model="adultSettingsShown" prevent-close>
         <UCard :ui="{ring: ''}">
             <template #header>
                 <h3 class="font-semibold text-lg">Attention!</h3>
