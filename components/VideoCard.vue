@@ -18,7 +18,7 @@ defineProps<{
                 {{ item.title }}
             </NuxtLink>
 
-            <div class="flex items-center justify-start gap-1.5 leading-4">
+            <div class="flex items-center justify-start gap-1.5 leading-5">
                 <template v-if="item.author">
                     <div class="truncate">
                         <NuxtLink :to="`/authors/${item.author.id}-${slugify(item.author.name)}`"

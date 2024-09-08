@@ -57,9 +57,9 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
 
             <UDashboardPanelContent v-if="page?.data">
                 <div class="flex flex-col md:flex-row gap-5">
-                    <div class="flex flex-col grow gap-2.5">
+                    <div class="flex flex-col grow gap-2.5 md:w-0">
                         <div v-if="page.data.video.video"
-                             class="h-[250px] md:h-[600px] rounded-md overflow-clip bg-black">
+                             class="max-h-[600px] rounded-md overflow-clip bg-black">
                             <div v-if="!viewAccepted" class="flex items-center justify-center h-full">
                                 <UIcon name="i-heroicons-eye-slash-solid" class="text-white text-8xl"/>
                             </div>
@@ -67,7 +67,7 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
                             <video v-else
                                    :src="fileUrl(page.data.video.video)"
                                    controls
-                                   class="w-full h-full"
+                                   class="w-full h-full aspect-[16/9]"
                                    autoplay
                                    playsinline/>
                         </div>
@@ -136,7 +136,7 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
                         </div>
                     </div>
 
-                    <div class="min-w-[300px] md:w-[300px]">
+                    <div class="min-w-[300px] md:w-[200px] lg:w-[300px] shrink-0">
                         <h3 class="font-semibold text-xl mb-2.5">Popular</h3>
 
                         <div class="flex flex-col gap-5">
