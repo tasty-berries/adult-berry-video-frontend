@@ -7,13 +7,14 @@ const repo  = new VideoRepository();
 
 const {data: page} = repo.show(id);
 
-const likes    = useLocalStorage<number[]>('likes', () => [], {initOnMounted: true});
-const dislikes = useLocalStorage<number[]>('dislikes', () => [], {initOnMounted: true});
+const likes           = useLocalStorage<number[]>('likes', () => [], {initOnMounted: true});
+const dislikes        = useLocalStorage<number[]>('dislikes', () => [], {initOnMounted: true});
 const favoriteAuthors = useLocalStorage<number[]>('favoriteAuthors', () => [], {initOnMounted: true});
 
-const wasLiked    = computed(() => likes.value.find(like => like === id) != undefined);
-const wasDisliked = computed(() => dislikes.value.find(like => like === id) != undefined);
-const wasFavoriteAuthor = computed(() => favoriteAuthors.value.find(author => author === page.value?.data.video.author.id));
+const wasLiked          = computed(() => likes.value.find(like => like === id) != undefined);
+const wasDisliked       = computed(() => dislikes.value.find(like => like === id) != undefined);
+const wasFavoriteAuthor = computed(() => favoriteAuthors.value.find(author => author ===
+                                                                              page.value?.data.video.author.id));
 
 function like() {
     if (wasDisliked.value)
@@ -58,7 +59,7 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
                 <div class="flex flex-col md:flex-row gap-5">
                     <div class="flex flex-col grow gap-2.5">
                         <div v-if="page.data.video.video"
-                             class="h-[600px] rounded-md overflow-clip bg-black">
+                             class="h-[250px] md:h-[600px] rounded-md overflow-clip bg-black">
                             <div v-if="!viewAccepted" class="flex items-center justify-center h-full">
                                 <UIcon name="i-heroicons-eye-slash-solid" class="text-white text-8xl"/>
                             </div>
@@ -70,51 +71,53 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
                                    autoplay/>
                         </div>
 
-                        <div class="flex justify-between items-start gap-2.5">
-                            <div class="flex flex-col items-start gap-2.5">
-                                <div>
-                                    <h3 class="text-2xl font-semibold">{{ page.data.video.title }}</h3>
+                        <div class="flex flex-col items-start gap-2.5 w-full">
+                            <div class="flex justify-between items-start gap-2.5 w-full">
+                                <div class="truncate">
+                                    <h3 class="text-lg md:text-2xl font-semibold truncate">{{ page.data.video.title }}</h3>
                                     <span>{{ page.data.video.views }} views</span>
                                 </div>
 
-                                <div v-if="page.data.video.author"
-                                     class="cursor-pointer flex gap-5 items-center bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-md py-1 px-2.5"
-                                     @click.self="navigateTo(`/authors/${page.data.video.author.id}-${slugify(page.data.video.author.name)}`)">
-                                    <div>
-                                        <p class="text-sm font-semibold leading-3 mt-1">Author</p>
-                                        <NuxtLink
-                                            :to="`/authors/${page.data.video.author.id}-${slugify(page.data.video.author.name)}`">
-                                            <span>{{ page.data.video.author.name }}</span>
-                                        </NuxtLink>
-                                    </div>
+                                <div class="flex gap-2.5">
+                                    <UButton label="Like"
+                                             icon="i-heroicons-hand-thumb-up"
+                                             :color="wasLiked ? 'green' : 'gray'"
+                                             class="[&>span+span]:hidden md:[&>span+span]:inline"
+                                             @click="like"/>
 
-                                    <UButton label="Favorite"
-                                             :color="wasFavoriteAuthor ? 'red' : 'gray'"
-                                             :icon="wasFavoriteAuthor ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
-                                             @click="favoriteAuthor"/>
-                                </div>
-
-                                <div v-if="page.data.video.tags && page.data.video.tags.length > 0">
-                                    <span class="me-1.5">Tags:</span>
-
-                                    <div class="inline-flex flex-wrap gap-1.5">
-                                        <UBadge v-for="tag in page.data.video.tags" color="gray">
-                                            {{ tag.name }}
-                                        </UBadge>
-                                    </div>
+                                    <UButton label="Dislike"
+                                             icon="i-heroicons-hand-thumb-down"
+                                             :color="wasDisliked ? 'red' : 'gray'"
+                                             class="[&>span+span]:hidden md:[&>span+span]:inline"
+                                             @click="dislike"/>
                                 </div>
                             </div>
 
-                            <div class="flex gap-2.5">
-                                <UButton label="Like"
-                                         icon="i-heroicons-hand-thumb-up"
-                                         :color="wasLiked ? 'green' : 'gray'"
-                                         @click="like"/>
+                            <div v-if="page.data.video.author"
+                                 class="cursor-pointer flex gap-5 items-center bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-md py-1 px-2.5"
+                                 @click.self="navigateTo(`/authors/${page.data.video.author.id}-${slugify(page.data.video.author.name)}`)">
+                                <div>
+                                    <p class="text-sm font-semibold leading-3 mt-1">Author</p>
+                                    <NuxtLink
+                                        :to="`/authors/${page.data.video.author.id}-${slugify(page.data.video.author.name)}`">
+                                        <span>{{ page.data.video.author.name }}</span>
+                                    </NuxtLink>
+                                </div>
 
-                                <UButton label="Dislike"
-                                         icon="i-heroicons-hand-thumb-down"
-                                         :color="wasDisliked ? 'red' : 'gray'"
-                                         @click="dislike"/>
+                                <UButton label="Favorite"
+                                         :color="wasFavoriteAuthor ? 'red' : 'gray'"
+                                         :icon="wasFavoriteAuthor ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
+                                         @click="favoriteAuthor"/>
+                            </div>
+
+                            <div v-if="page.data.video.tags && page.data.video.tags.length > 0">
+                                <span class="me-1.5">Tags:</span>
+
+                                <div class="inline-flex flex-wrap gap-1.5">
+                                    <UBadge v-for="tag in page.data.video.tags" color="gray">
+                                        {{ tag.name }}
+                                    </UBadge>
+                                </div>
                             </div>
                         </div>
                     </div>
