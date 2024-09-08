@@ -69,7 +69,7 @@ function favoriteAuthor() {
                                 </div>
 
                                 <div v-if="page.data.video.author"
-                                     class="cursor-pointer flex gap-5 items-center bg-gray-800 border border-gray-700 rounded-md py-1 px-2.5"
+                                     class="cursor-pointer flex gap-5 items-center bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-md py-1 px-2.5"
                                      @click.self="navigateTo(`/authors/${page.data.video.author.id}-${slugify(page.data.video.author.name)}`)">
                                     <div>
                                         <p class="text-sm font-semibold leading-3 mt-1">Author</p>
@@ -81,7 +81,7 @@ function favoriteAuthor() {
 
                                     <UButton label="Favorite"
                                              :color="wasFavoriteAuthor ? 'red' : 'gray'"
-                                             icon="i-heroicons-heart"
+                                             :icon="wasFavoriteAuthor ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'"
                                              @click="favoriteAuthor"/>
                                 </div>
 
@@ -100,14 +100,10 @@ function favoriteAuthor() {
                                 <UButton label="Like"
                                          icon="i-heroicons-hand-thumb-up"
                                          :color="wasLiked ? 'green' : 'gray'"
-                                         size="lg"
-                                         class="text-md"
                                          @click="like"/>
 
                                 <UButton label="Dislike"
                                          icon="i-heroicons-hand-thumb-down"
-                                         size="lg"
-                                         class="text-md"
                                          :color="wasDisliked ? 'red' : 'gray'"
                                          @click="dislike"/>
                             </div>
