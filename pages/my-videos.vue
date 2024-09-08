@@ -19,11 +19,17 @@ const {reset} = useInfiniteScroll(scrollRef, async () => {
     else if (!videos.value)
         return;
 
+    if (likes.value.length === 0)
+        return;
+
     const newVideos = await repo.get({page: ++page.value, search: search.value, ids: likes.value});
     videos.value?.data.push(...newVideos.data);
 });
 
 watch(search, async (searchValue) => {
+    if (likes.value.length === 0)
+        return;
+
     loading.value = true;
 
     videos.value = await repo.get({search: search.value, ids: likes.value});
@@ -40,7 +46,8 @@ watch(videos, value => {
 });
 
 onMounted(async () => {
-    videos.value = await repo.get({search: search.value, ids: likes.value});
+    if (likes.value.length > 0)
+        videos.value = await repo.get({search: search.value, ids: likes.value});
 });
 </script>
 

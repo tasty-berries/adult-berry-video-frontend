@@ -23,6 +23,9 @@ const rows = computed(() => {
 });
 
 onMounted(async () => {
+    if (favoriteAuthors.value.length === 0)
+        return;
+
     const repo    = new AuthorRepository();
     authors.value = await repo.get({ids: favoriteAuthors.value});
 });
