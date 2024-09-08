@@ -13,21 +13,35 @@ defineProps<{
         </NuxtLink>
 
         <div>
-            <NuxtLink :to="`/watch/${item.id}`"
+            <NuxtLink :to="`/watch/${item.id}`" :title="item.title"
                       class="block font-semibold text-lg truncate leading-6">
                 {{ item.title }}
             </NuxtLink>
 
-            <div class="flex flex-wrap items-center gap-1.5 leading-4">
+            <div class="flex items-center justify-start gap-1.5 leading-4">
                 <template v-if="item.author">
-                    <NuxtLink :to="`/authors/${item.author.id}-${slugify(item.author.name)}`">
-                        <span>{{ item.author.name }}</span>
-                    </NuxtLink>
+                    <div class="truncate">
+                        <NuxtLink :to="`/authors/${item.author.id}-${slugify(item.author.name)}`"
+                                  :title="item.author.name">
+                            <span class="truncate">{{ item.author.name }}</span>
+                        </NuxtLink>
+                    </div>
 
                     <span>•</span>
                 </template>
 
-                <span>{{ item.views }} views</span>
+                <template v-if="item.hentai_title">
+                    <div class="truncate">
+                        <NuxtLink :to="`/titles/${item.hentai_title.id}-${slugify(item.hentai_title.name)}`"
+                                  :title="item.hentai_title.name">
+                            <span class="truncate">{{ item.hentai_title.name }}</span>
+                        </NuxtLink>
+                    </div>
+
+                    <span>•</span>
+                </template>
+
+                <div class="shrink-0">{{ item.views }} views</div>
             </div>
         </div>
     </div>

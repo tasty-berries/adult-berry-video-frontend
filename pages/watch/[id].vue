@@ -111,6 +111,16 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
                                          @click="favoriteAuthor"/>
                             </div>
 
+                            <div v-if="page.data.video.hentai_title">
+                                <span class="me-1.5">Title:</span>
+
+                                <NuxtLink :to="`/titles/${page.data.video.hentai_title.id}-${slugify(page.data.video.hentai_title.name)}`">
+                                    <UBadge color="gray">
+                                        {{ page.data.video.hentai_title.name }}
+                                    </UBadge>
+                                </NuxtLink>
+                            </div>
+
                             <div v-if="page.data.video.tags && page.data.video.tags.length > 0">
                                 <span class="me-1.5">Tags:</span>
 
