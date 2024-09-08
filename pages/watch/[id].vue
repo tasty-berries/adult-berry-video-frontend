@@ -41,6 +41,8 @@ function favoriteAuthor() {
     else
         favoriteAuthors.value.push(page.value?.data.video.author.id);
 }
+
+const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: () => undefined});
 </script>
 
 <template>
@@ -57,7 +59,14 @@ function favoriteAuthor() {
                     <div class="flex flex-col grow gap-2.5">
                         <div v-if="page.data.video.video"
                              class="h-[600px] rounded-md overflow-clip bg-black">
-                            <video :src="fileUrl(page.data.video.video)" controls class="w-full h-full"
+                            <div v-if="!viewAccepted" class="flex items-center justify-center h-full">
+                                <UIcon name="i-heroicons-eye-slash-solid" class="text-white text-8xl"/>
+                            </div>
+
+                            <video v-else
+                                   :src="fileUrl(page.data.video.video)"
+                                   controls
+                                   class="w-full h-full"
                                    autoplay/>
                         </div>
 
