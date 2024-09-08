@@ -68,7 +68,8 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
                                    :src="fileUrl(page.data.video.video)"
                                    controls
                                    class="w-full h-full"
-                                   autoplay/>
+                                   autoplay
+                                   playsinline/>
                         </div>
 
                         <div class="flex flex-col items-start gap-2.5 w-full">
@@ -114,9 +115,12 @@ const viewAccepted = useCookie<boolean | undefined>('viewAccepted', {default: ()
                                 <span class="me-1.5">Tags:</span>
 
                                 <div class="inline-flex flex-wrap gap-1.5">
-                                    <UBadge v-for="tag in page.data.video.tags" color="gray">
-                                        {{ tag.name }}
-                                    </UBadge>
+                                    <NuxtLink v-for="tag in page.data.video.tags"
+                                              :to="`/tags/${tag.id}-${slugify(tag.name)}`">
+                                        <UBadge color="gray">
+                                            {{ tag.name }}
+                                        </UBadge>
+                                    </NuxtLink>
                                 </div>
                             </div>
                         </div>
