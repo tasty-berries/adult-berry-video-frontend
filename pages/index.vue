@@ -11,6 +11,11 @@ const {data: videos, status} = await repo.index(() => ({search: search.value}));
 const scrollRef = ref();
 
 const {reset} = useInfiniteScroll(scrollRef, async () => {
+    if (videos.value && videos.value?.data.length >= videos.value?.meta.total)
+        return;
+    else if (!videos.value)
+        return;
+
     const newVideos = await repo.get({page: ++page.value, search: search.value});
     videos.value?.data.push(...newVideos.data);
 });
